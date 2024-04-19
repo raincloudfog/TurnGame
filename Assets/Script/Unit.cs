@@ -17,9 +17,8 @@ public class Unit : MonoBehaviour
     float CheckPoint = 1f;
 
     [Space(20)]
-    //이동, 바라보는 방향
-    [SerializeField]
-    Vector3 velocity,
+    //이동, 바라보는 방향    
+    public Vector2 velocity,
         Direction;
 
     enum eDirection
@@ -37,7 +36,7 @@ public class Unit : MonoBehaviour
     // Update is called once per frame
     public void Updated()
     {
-        if (Input.GetKeyDown(KeyCode.X))
+        /*if (Input.GetKeyDown(KeyCode.X))
         {
             IsInteraction = false;
         }
@@ -58,33 +57,25 @@ public class Unit : MonoBehaviour
         if(IsInteraction == true)
         {
             return;
-        }
-
-        Move();
+        }*/
     }
 
-    void Move()
+    public void Move(Vector3 p)
     {
-        Vector2 playerInput;
-        
-        playerInput.x = Input.GetAxis("Horizontal");
-        playerInput.y = Input.GetAxis("Vertical");
-
+        p = Vector2.ClampMagnitude(p, 1f);
 
         //삼항 연산자안에 삼항연산자 가능 04/15
         Vector3 directX =
-            playerInput.x > 0 ?
-            Vector3.right : playerInput.x < 0 ?
+            p.x > 0 ?
+            Vector3.right : p.x < 0 ?
             Vector3.left : Vector3.zero;
         Vector3 directY =
-            playerInput.y > 0 ?
-            Vector3.up : playerInput.y < 0 ?
+            p.y > 0 ?
+            Vector3.up : p.y < 0 ?
             Vector3.down : Vector3.zero;
 
-        playerInput = Vector2.ClampMagnitude(playerInput, 1f);
-
-        Vector3 desiredVelocity =
-            new Vector3(playerInput.x, playerInput.y, 0f) * moveSpeed;
+        /*Vector3 desiredVelocity =
+            new Vector3(p.x, p.y, 0f) * moveSpeed;
 
         float maxSpeedChage = maxAccelerration * Time.deltaTime;
 
@@ -93,13 +84,15 @@ public class Unit : MonoBehaviour
         velocity.y =
             Mathf.MoveTowards(velocity.y, desiredVelocity.y, maxSpeedChage);
 
-        Vector3 displacement = velocity * Time.deltaTime;
-        Vector3 newPosition = transform.localPosition + displacement;
+        Vector3 displacement = velocity * Time.deltaTime;*/
+        Vector3 newPosition = transform.localPosition + p  * moveSpeed* Time.deltaTime;
 
 
         Direction = directX + directY;
         //Debug.Log(Direction);
         transform.localPosition = newPosition;
+
+        //Debug.Log("Unit Move() : " + newPosition);
     }
 
 

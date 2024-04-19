@@ -4,6 +4,12 @@ using UnityEngine;
 
 public class Game : MonoBehaviour
 {
+    public static Game Instance { get; private set; }
+
+
+    //게임 정보
+    public Gameinfo gameinfo;
+
     // 게임 정지
     [SerializeField]
     bool gamePulse;
@@ -26,10 +32,15 @@ public class Game : MonoBehaviour
         }
     }
 
+    private void Awake()
+    {
+        Instance = this;
+    }
+
     // Start is called before the first frame update
     void Start()
     {
-        
+        gameinfo = new Gameinfo();
     }
 
     // Update is called once per frame

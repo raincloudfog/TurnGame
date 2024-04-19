@@ -1,7 +1,7 @@
 {
   "quests": [
     {
-      "id": 1,
+      "id": 0,
       "title": "첫 번째 퀘스트",
       "description": "다른 사람과 말을 하십쇼",
       "objectives": [
@@ -15,7 +15,7 @@
       "completed": false
     },
     {
-      "id": 2,
+      "id": 1,
       "title": "두 번째 퀘스트",
       "description": "몬스터를 잡아보세요",
       "obectives": [

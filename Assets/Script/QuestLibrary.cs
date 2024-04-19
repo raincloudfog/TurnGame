@@ -33,7 +33,7 @@ public static class QuestLibrary
         {
             LoadQuestData();
         }
-        return questList.quests[id -1];    
+        return questList.quests[id];    
     }
 }
 
