@@ -13,20 +13,31 @@ public class TalkCanvas : MonoBehaviour
     TMP_Text TalkText;
 
     //대화순서
+    [SerializeField]
     int conversationOrder;
 
-    public void CreateDialog(NPCData npc)
+    /// <summary>
+    /// 대화 끝
+    /// </summary>
+    public void ExitGameObj()
+    {
+        TalkText.text = "";
+        conversationOrder = 0;
+        gameObject.SetActive(false);
+    }
+
+    public bool CreateDialog(NPCData npc)
     {
         if (npc == null)
         {
             Debug.LogError("NPCData is null!");
-            return;
+            return false;
         }
 
         if (npc.Talks == null || npc.Talks.Count == 0)
         {
             Debug.LogError("DialogueSet is null or empty!");
-            return;
+            return false;
         }
 
         DialogueSet currentDialogueSet = npc.Talks[npc.npcIntData.order];
@@ -34,24 +45,31 @@ public class TalkCanvas : MonoBehaviour
         if (currentDialogueSet == null || currentDialogueSet.dialogueLines == null || currentDialogueSet.dialogueLines.Count == 0)
         {
             Debug.LogError("DialogueSet or dialogueLines is null or empty!");
-            return;
+            return false;
         }
 
-        TalkText.text = currentDialogueSet.dialogueLines[conversationOrder];
+        
 
         // 대화 끝나면 대화 순서를 증가시키고 대화 내용을 초기화
-        if (conversationOrder >= currentDialogueSet.dialogueLines.Count - 1)
+        if (conversationOrder >= currentDialogueSet.dialogueLines.Count)
         {
             conversationOrder = 0;
             npc.npcIntData.order++;
+            if (npc.npcIntData.order >= npc.Talks.Count)
+            {
+                npc.npcIntData.order = npc.Talks.Count - 1;
+            }
+            Game.Instance.ChangeKey(Game.ekeyState.BasicKey);
+                return false;
         }
         else
         {
+            TalkText.text = currentDialogueSet.dialogueLines[conversationOrder];
             conversationOrder++;
         }
+
+        return true;
     }
-
-
 
 
     /*public string GetTalk()

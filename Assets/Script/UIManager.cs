@@ -17,16 +17,16 @@ public class UIManager : MonoBehaviour
     }
 
     public void Talk(NPCData npc)
-    {
-        Debug.Log("UIManager:: Talk(NPCData npc) : 1");
+    {        
         //이러면 굳이 확인을 여러번 하기도 하니 좋은 방법 떠오르면 수정해야 될 거 같음.
-        if(Game.Instance.gameinfo.npc == null)
+        if(Game.Instance.gameinfo.npc == null || Game.Instance.gameinfo.npc != npc)
         {
-            Debug.Log("UIManager:: Talk(NPCData npc) : npc == "  + npc);
-            Game.Instance.gameinfo.npc = npc;
+            Game.Instance.gameinfo.ChangeNpc(npc);
         }
         talkCanvas.gameObject.SetActive(true);
-        talkCanvas.CreateDialog(Game.Instance.gameinfo.npc);
-        Debug.Log("UIManager:Talk():: 토크 출력 해야됨");
+        if(!talkCanvas.CreateDialog(Game.Instance.gameinfo.npc))
+        {
+            talkCanvas.ExitGameObj();
+        }
     }
 }
